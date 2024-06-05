@@ -2,12 +2,15 @@ const express = require("express");
 const cors = require("cors");
 
 const app = express();
+const port = 3001;
+
 app.use(express.json());
 app.use(cors({ origin: true }));
 
-app.post("/authenticate", async (req, res) => {
-  const { username } = req.body;
-  return res.json({ username: username, secret: "sha256..." });
+app.get('/', (req, res) => {
+  res.send('Hello from backend');
 });
 
-app.listen(3001);
+app.listen(port, () => {
+  console.log(`Running on ${port}`);
+});

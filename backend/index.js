@@ -1,14 +1,32 @@
+const childProcess = require("./childProcess");
 const express = require("express");
 const cors = require("cors");
 
 const app = express();
 const port = 3001;
 
-app.use(express.json());
-app.use(cors({ origin: true }));
+async function childProc() {
+  return await childProcess.childProcess();
+}
 
-app.get('/', (req, res) => {
-  res.send('Hello from backend');
+app.use(express.json());
+app.use(cors({ 
+  origin: "http://localhost:5173",
+  method: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type']
+}));
+
+app.get("/", (req, res) => {
+  res.send("Hello from backend");
+});
+
+app.post("/button", async (req, res) => {
+  try {
+    const result = await childProc();
+    res.json({ message: "Button clicked", result });
+  } catch (error) {
+    res.status(500).json({ message: "Error occurred", error });
+  }
 });
 
 app.listen(port, () => {

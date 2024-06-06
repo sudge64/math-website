@@ -3,7 +3,8 @@ const { spawn } = require("node:child_process");
 
 async function childProcess() {
   return new Promise((resolve, reject) => {
-    const command = spawn("ls", ["-al", "."]);
+    // const command = spawn("ls", ["-al", "."]);
+    const command = spawn("date");
     let output = "";
 
     command.stdout.on("data", (data) => {

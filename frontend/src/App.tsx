@@ -33,7 +33,7 @@ function App() {
       <Button color="primary" onClick={handleButtonClick}>
         Press Me
       </Button>
-      <p>{response}</p>
+      <pre>{response}</pre>
       <p>{message}</p>
     </>
   );

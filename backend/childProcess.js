@@ -3,25 +3,25 @@ const { spawn } = require("node:child_process");
 
 async function childProcess() {
   return new Promise((resolve, reject) => {
-    const ls = spawn("ls", ["-al", "."]);
+    const command = spawn("ls", ["-al", "."]);
     let output = "";
 
-    ls.stdout.on("data", (data) => {
+    command.stdout.on("data", (data) => {
       output += data.toString();
     });
 
-    ls.stderr.on("data", (data) => {
+    command.stderr.on("data", (data) => {
       output += data.toString();
     });
 
-    ls.on("close", (code) => {
+    command.on("close", (code) => {
       if (code !== 0) {
         return reject(`Child process exited with code ${code}`);
       }
       resolve(output);
     });
 
-    ls.on("error", (err) => {
+    command.on("error", (err) => {
       reject(`Failed to start child process: ${err}`);
     });
   });

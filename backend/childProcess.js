@@ -5,7 +5,7 @@ async function childProcess() {
   return new Promise((resolve, reject) => {
     // const command = spawn("ls", ["-al", "."]);
     // const command = spawn("date");
-    const command = spawn("../number-cruncher/target/release/number-cruncher");
+    const command = spawn("../number-cruncher/target/release/number-cruncher", ["1", "2", "+"]);
     let output = "";
 
     command.stdout.on("data", (data) => {

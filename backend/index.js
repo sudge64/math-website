@@ -1,8 +1,10 @@
 const childProcess = require("./childProcess");
 const express = require("express");
 const cors = require("cors");
-
 const app = express();
+const http = require("http").createServer(app)
+const io = require("socket.io")(http);
+
 const port = 3001;
 
 async function childProc() {
@@ -29,6 +31,10 @@ app.post("/button", async (req, res) => {
   }
 });
 
-app.listen(port, () => {
+http.listen(port, () => {
   console.log(`Running on ${port}`);
+});
+
+io.on('connection', (socket) => {
+    console.log('new client connected');
 });

@@ -1,9 +1,19 @@
 const childProcess = require("./childProcess");
 const express = require("express");
-const cors = require("cors");
 const app = express();
-const http = require("http").createServer(app)
-const io = require("socket.io")(http);
+const http = require("http");
+const cors = require("cors");
+const { Server } = require("socket.io");
+app.use(cors());
+
+const server = http.createServer(app);
+
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST"],
+  },
+});
 
 const port = 3001;
 
@@ -11,12 +21,6 @@ async function childProc() {
   return await childProcess.childProcess();
 }
 
-app.use(express.json());
-app.use(cors({ 
-  origin: "http://localhost:5173",
-  method: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type']
-}));
 
 app.get("/", (req, res) => {
   res.send("Hello from backend");
@@ -31,10 +35,14 @@ app.post("/button", async (req, res) => {
   }
 });
 
-http.listen(port, () => {
-  console.log(`Running on ${port}`);
+io.on("connection", (socket) => {
+  console.log(`new client connected: ${socket.id}`);
+
+  socket.on("disconnect", () => {
+    console.log(`client disconnected: ${socket.id}`)
+  })
 });
 
-io.on('connection', (socket) => {
-    console.log('new client connected');
+server.listen(port, () => {
+  console.log("SERVER RUNNING");
 });

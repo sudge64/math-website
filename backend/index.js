@@ -21,7 +21,6 @@ async function childProc() {
   return await childProcess.childProcess();
 }
 
-
 app.get("/", (req, res) => {
   res.send("Hello from backend");
 });
@@ -39,8 +38,8 @@ io.on("connection", (socket) => {
   console.log(`new client connected: ${socket.id}`);
 
   socket.on("disconnect", () => {
-    console.log(`client disconnected: ${socket.id}`)
-  })
+    console.log(`client disconnected: ${socket.id}`);
+  });
 });
 
 server.listen(port, () => {

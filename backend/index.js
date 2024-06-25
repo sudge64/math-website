@@ -40,6 +40,11 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     console.log(`client disconnected: ${socket.id}`);
   });
+
+  socket.on("send_text", (data) => {
+    console.log(data);
+    socket.emit("receive_text", data);
+  });
 });
 
 server.listen(port, () => {

@@ -2,6 +2,7 @@ import io from "socket.io-client";
 import { useEffect, useState } from "react";
 import "./App.css";
 import Button from "./components/Button";
+import TextBox from "./components/TextBox";
 
 const socket = io.connect("http://localhost:3001")
 
@@ -38,6 +39,7 @@ function App() {
       </Button>
       <pre>{response}</pre>
       <p>{message}</p>
+      <TextBox socket={socket} />
     </>
   );
 }

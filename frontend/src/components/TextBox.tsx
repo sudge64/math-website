@@ -33,7 +33,7 @@ function TextBox({ socket }) {
       <div>
         <input
           type="text"
-          placeholder="Enter Math Expression"
+          placeholder="Enter Math Expression (RPN format)"
           onChange={(e) => {
             setCurrentText(e.target.value);
           }}

@@ -15,7 +15,7 @@ const io = new Server(server, {
   },
 });
 
-const port = 3001;
+const port = process.env.PORT || 3001;
 
 async function childProc() {
   return await childProcess.childProcess();

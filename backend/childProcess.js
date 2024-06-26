@@ -1,11 +1,18 @@
 const util = require("util");
 const { spawn } = require("node:child_process");
 
-async function childProcess() {
+async function childProcess(stringyBoi) {
   return new Promise((resolve, reject) => {
     // const command = spawn("ls", ["-al", "."]);
     // const command = spawn("date");
-    const command = spawn("../number-cruncher/target/release/number-cruncher", ["1", "2", "+"]);
+    const cliArguments = stringyBoi.split(/(\s+)/).filter(function(str) {
+      return /\S/.test(str);
+    });
+    console.log(`cliArguments: ${cliArguments}`);
+    const command = spawn(
+      "../number-cruncher/target/release/number-cruncher",
+      cliArguments,
+    );
     let output = "";
 
     command.stdout.on("data", (data) => {

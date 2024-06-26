@@ -4,6 +4,7 @@ const app = express();
 const http = require("http");
 const cors = require("cors");
 const { Server } = require("socket.io");
+const { ChildProcess } = require("child_process");
 app.use(cors());
 
 const server = http.createServer(app);
@@ -17,8 +18,8 @@ const io = new Server(server, {
 
 const port = process.env.PORT || 3001;
 
-async function childProc() {
-  return await childProcess.childProcess();
+async function childProc(stringyBoi) {
+  return await childProcess.childProcess(stringyBoi);
 }
 
 app.get("/", (req, res) => {
@@ -27,8 +28,9 @@ app.get("/", (req, res) => {
 
 app.post("/button", async (req, res) => {
   try {
-    const result = await childProc();
+    const result = await childProc("1 2 -");
     res.json({ message: "Button clicked", result });
+    console.log(`result: ${result}`)
   } catch (error) {
     res.status(500).json({ message: "Error occurred", error });
   }
@@ -41,9 +43,15 @@ io.on("connection", (socket) => {
     console.log(`client disconnected: ${socket.id}`);
   });
 
-  socket.on("send_text", (data) => {
+  socket.on("sendText", async (data) => {
     console.log(data);
-    socket.emit("receive_text", data);
+    try {
+      const result = await childProc(data.text);
+      console.log(`result: ${result}`);
+      socket.emit("receiveText", result);
+    } catch (e) {
+      socket.emit("receiveText", e);
+    }
   });
 });
 

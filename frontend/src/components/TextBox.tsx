@@ -1,10 +1,17 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "./Button";
 
 function TextBox({ socket }) {
   const [currentText, setCurrentText] = useState("");
-  const [textList, setTextList] = useState([]);
-  const sendText = async () => {
+  const [resultText, setResultText ] = useState("");
+
+  useEffect(() => {
+    socket.on("receiveText", (data) => {
+      setResultText(data);
+    });
+  }, []);
+
+  const sendTextFunction = () => {
     if (currentText !== "") {
       const textData = {
         text: currentText,
@@ -13,29 +20,25 @@ function TextBox({ socket }) {
           ":" +
           new Date(Date.now()).getMinutes(),
       };
-      await socket.emit("send_text", textData);
-      setTextList((list) => [...list, textData]);
-      setCurrentText("");
+      socket.emit("sendText", textData);
+      setResultText(textData.text);
     }
   };
-
-  useEffect(() => {
-    socket.on("receive_text", (data) => {
-      setTextList((list) => [...list, data]);
-    });
-  }, [socket]);
   
   return (
     <>
       <div>
+        <p>{resultText}</p>
+      </div>
+      <div>
         <input
           type="text"
           placeholder="Enter Math Expression"
-          onChange={(event) => {
-            setCurrentText(event.target.value);
+          onChange={(e) => {
+            setCurrentText(e.target.value);
           }}
         />
-      <Button color="primary" onClick={sendText}>
+      <Button color="primary" onClick={sendTextFunction}>
           &#9658;
       </Button>
       </div>

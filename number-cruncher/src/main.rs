@@ -2,6 +2,7 @@ use std::{env, str::FromStr};
 
 mod math_basic;
 mod math_logic;
+mod math_binary;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -9,9 +10,6 @@ fn main() {
     let a = f32::from_str(&args[1]).unwrap();
     let b = f32::from_str(&args[2]).unwrap();
     let opt = String::from_str(&args[3]).unwrap();
-
-    let bool_a = logic_match(a as u8);
-    let bool_b = logic_match(b as u8);
 
     match opt.as_str() {
         "+" => {
@@ -30,23 +28,27 @@ fn main() {
             println!("Modulo: {:?}", math_basic::modulo(a, b));
         }
         "AND" => {
-            println!("AND: {:?}", math_logic::and_logic(bool_a, bool_b));
+            println!("AND: {:?}", math_logic::and_logic(logic_match(a as u8), logic_match(b as u8)));
         }
         "OR" => {
-            println!("OR: {:?}", math_logic::or_logic(bool_a, bool_b));
+            println!("OR: {:?}", math_logic::or_logic(logic_match(a as u8), logic_match(b as u8)));
         }
         "NAND" => {
-            println!("NAND: {:?}", math_logic::nand_logic(bool_a, bool_b));
+            println!("NAND: {:?}", math_logic::nand_logic(logic_match(a as u8), logic_match(b as u8)));
         }
         "NOR" => {
-            println!("NOR: {:?}", math_logic::nor_logic(bool_a, bool_b));
+            println!("NOR: {:?}", math_logic::nor_logic(logic_match(a as u8), logic_match(b as u8)));
         }
         "XOR" => {
-            println!("XOR: {:?}", math_logic::xor_logic(bool_a, bool_b));
+            println!("XOR: {:?}", math_logic::xor_logic(logic_match(a as u8), logic_match(b as u8)));
         }
         "NOT" => {
-            println!("NOT: {:?}", math_logic::not_logic(bool_a));
-            println!("NOT: {:?}", math_logic::not_logic(bool_b));
+            println!("NOT: {:?}", math_logic::not_logic(logic_match(a as u8)));
+            println!("NOT: {:?}", math_logic::not_logic(logic_match(b as u8)));
+        }
+        "BIN" => {
+            println!("{:?}", math_binary::decimal_to_binary(a as i32));
+            println!("{:?}", math_binary::decimal_to_binary(b as i32));
         }
         _ => {
             panic!("ERROR: Unrecognized operator.");

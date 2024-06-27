@@ -18,7 +18,9 @@ function TextBox({ socket }) {
         time:
           new Date(Date.now()).getHours() +
           ":" +
-          new Date(Date.now()).getMinutes(),
+          new Date(Date.now()).getMinutes() +
+          " " +
+          new Date(Date.now()).getDay(),
       };
       socket.emit("sendText", textData);
       setResultText(textData.text);

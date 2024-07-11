@@ -55,8 +55,12 @@ fn main() {
             println!("NOT: {:?}", math_logic::not_logic(logic_match(b as u8)));
         }
         "BIN" => {
-            println!("{:?}", math_binary::decimal_to_binary(a as i32));
-            println!("{:?}", math_binary::decimal_to_binary(b as i32));
+            // println!("{:?}", math_binary::decimal_to_binary(a as i32));
+            // println!("{:?}", math_binary::decimal_to_binary(b as i32));
+            math_binary::decimal_to_binary(a as i32);
+            println!();
+            math_binary::decimal_to_binary(b as i32);
+            println!();
         }
         _ => {
             panic!("ERROR: Unrecognized operator.");

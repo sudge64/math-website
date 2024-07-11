@@ -8,7 +8,7 @@ pub fn decimal_to_binary(a: i32) {
 		i += 1;
 	}
 
-    print!("Binary: ");
+    print!("BINARY: ");
 	for j in (0..i).rev() {
 		print!("{}", binary[j]);
 		if j % 4 == 0 && j != 0 {

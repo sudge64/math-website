@@ -1,15 +1,23 @@
-use std::{env, str::FromStr};
+use clap::Parser;
 
 mod math_basic;
 mod math_logic;
 mod math_binary;
 
-fn main() {
-    let args: Vec<String> = env::args().collect();
+#[derive(Parser, Debug)]
+#[command(version, about, long_about = None)]
+struct Args {
+    a: f32,
+    b: f32,
+    opt: String
+}
 
-    let a = f32::from_str(&args[1]).unwrap();
-    let b = f32::from_str(&args[2]).unwrap();
-    let opt = String::from_str(&args[3]).unwrap();
+fn main() {
+    let args = Args::parse();
+
+    let a = args.a;
+    let b = args.b;
+    let opt = args.opt;
 
     match opt.as_str() {
         "+" => {

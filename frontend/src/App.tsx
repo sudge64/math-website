@@ -22,6 +22,10 @@ function App() {
     setCurrentText(prev => prev + char);
   };
 
+  const handleBackspaceClick = () => {
+    setCurrentText(prev => prev.slice(0, -1));
+  };
+
   const handleSendText = () => {
     if (currentText !== "") {
       const textData = {
@@ -103,8 +107,11 @@ function App() {
           <Button color="success" char="=" onClick={handleSendText}>
             <MathJax>{"$$=$$"}</MathJax>
           </Button>
-          <Button color="success" char=" " onClick={handleButtonClick}>
+          <Button color="primary" char=" " onClick={handleButtonClick}>
             Space
+          </Button>
+          <Button color="primary" char="backspace" onClick={handleBackspaceClick}>
+            ⌫
           </Button>
         </div>
         <p>{response}</p>

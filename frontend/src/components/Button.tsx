@@ -13,7 +13,7 @@ interface Props {
     | "light"
     | "dark"
     | "link";
-  onClick: (char: string) => void;
+  onClick: (char?: string) => void;
 }
 
 const Button = ({ children, char, onClick, color = "primary" }: Props) => {

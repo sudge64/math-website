@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import Button from "./Button";
 
-function TextBox({ socket }) {
-  const [currentText, setCurrentText] = useState("");
+function TextBox({ socket, currentText, setCurrentText }) {
   const [resultText, setResultText ] = useState("");
 
   useEffect(() => {
@@ -35,6 +34,7 @@ function TextBox({ socket }) {
       <div>
         <input
           type="text"
+          value={currentText}
           placeholder="Enter Math Expression (RPN format)"
           onChange={(e) => {
             setCurrentText(e.target.value);

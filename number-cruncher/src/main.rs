@@ -1,25 +1,33 @@
 use clap::Parser;
+use shunting_yard::shunting_yard;
 
 mod math_basic;
 mod math_logic;
 mod math_binary;
+mod shunting_yard;
+mod test;
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
-struct Args {
+/*struct Args {
     a: f32,
     b: f32,
     opt: String
+}*/
+struct Args {
+    math_string: String,
 }
 
 fn main() {
     let args = Args::parse();
+    let math_string = args.math_string;
+    println!("{:?}", shunting_yard(math_string));
 
-    let a = args.a;
-    let b = args.b;
-    let opt = args.opt;
+    // let a = args.a;
+    // let b = args.b;
+    // let opt = args.opt;
 
-    match opt.as_str() {
+    /*match opt.as_str() {
         "+" => {
             println!("Addition: {}", math_basic::addition(a, b));
         }
@@ -63,7 +71,7 @@ fn main() {
         _ => {
             panic!("ERROR: Unrecognized operator.");
         }
-    }
+    }*/
 }
 
 fn logic_match(operand: u8) -> bool {

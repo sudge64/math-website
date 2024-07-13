@@ -1,11 +1,9 @@
 use clap::Parser;
-use shunting_yard::shunting_yard;
 
 mod math_basic;
 mod math_logic;
 mod math_binary;
 mod shunting_yard;
-mod test;
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
@@ -21,7 +19,7 @@ struct Args {
 fn main() {
     let args = Args::parse();
     let math_string = args.math_string;
-    println!("{:?}", shunting_yard(math_string));
+    println!("{:?}", shunting_yard::shunting_yard(math_string));
 
     // let a = args.a;
     // let b = args.b;

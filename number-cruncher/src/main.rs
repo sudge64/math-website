@@ -1,9 +1,12 @@
 use clap::Parser;
+use evalutate_rpn::evaluate_rpn;
 
-mod math_basic;
-mod math_logic;
-mod math_binary;
+// mod math_basic;
+// mod math_logic;
+// mod math_binary;
 mod shunting_yard;
+mod evalutate_rpn;
+mod test;
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
@@ -19,7 +22,9 @@ struct Args {
 fn main() {
     let args = Args::parse();
     let math_string = args.math_string;
-    println!("{:?}", shunting_yard::shunting_yard(math_string));
+    let output_queue = shunting_yard::shunting_yard(math_string);
+    let result = evaluate_rpn(output_queue);
+    println!("{:?}", result);
 
     // let a = args.a;
     // let b = args.b;
@@ -72,7 +77,7 @@ fn main() {
     }*/
 }
 
-fn logic_match(operand: u8) -> bool {
+/* fn logic_match(operand: u8) -> bool {
     match operand {
         0 => false,
         1 => true,
@@ -80,4 +85,4 @@ fn logic_match(operand: u8) -> bool {
             panic!("ERROR: Operand not 0 or 1.");
         }
     }
-}
+}*/

@@ -179,7 +179,5 @@ pub fn shunting_yard(math_string: String) -> Vec<char> {
         }
     });
 
-    // println!("OUTPUT QUEUE: {:?}", output_queue);
-    // println!("OPERATOR STACK: {:?}", operator_stack);
     output_queue
 }

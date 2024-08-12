@@ -11,7 +11,7 @@ fn shunting_yard_success() {
 
 #[test]
 fn rpn_success() {
-    let answer: u32 = 7;
+    let answer: u64 = 7;
     let output_queue: Vec<char> = vec!['1', '2', '3', '*', '+'];
     assert_eq!(answer, evaluate_rpn(output_queue));
 }

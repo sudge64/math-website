@@ -10,44 +10,44 @@
 *               to panic when it read a `None` from the empty stack.
 */
 
-pub fn evaluate_rpn(output_queue: Vec<char>) -> u64 {
-    let mut stack: Vec<u64> = Vec::new();
+pub fn evaluate_rpn(output_queue: Vec<char>) -> i64 {
+    let mut stack: Vec<i64> = Vec::new();
 
     for token in output_queue.into_iter() {
         // My a & b were here.
         match token {
             '+' => {
-                let b: u64 = stack.pop().unwrap();
-                let a: u64 = stack.pop().unwrap();
+                let b: i64 = stack.pop().unwrap();
+                let a: i64 = stack.pop().unwrap();
                 stack.push(a + b);
             }
             '-' => {
-                let b: u64 = stack.pop().unwrap();
-                let a: u64 = stack.pop().unwrap();
+                let b: i64 = stack.pop().unwrap();
+                let a: i64 = stack.pop().unwrap();
                 stack.push(a - b);
             }
             '*' => {
-                let b: u64 = stack.pop().unwrap();
-                let a: u64 = stack.pop().unwrap();
+                let b: i64 = stack.pop().unwrap();
+                let a: i64 = stack.pop().unwrap();
                 stack.push(a * b);
             }
             '/' => {
-                let b: u64 = stack.pop().unwrap();
-                let a: u64 = stack.pop().unwrap();
+                let b: i64 = stack.pop().unwrap();
+                let a: i64 = stack.pop().unwrap();
                 stack.push(a / b);
             }
             '%' => {
-                let b: u64 = stack.pop().unwrap();
-                let a: u64 = stack.pop().unwrap();
+                let b: i64 = stack.pop().unwrap();
+                let a: i64 = stack.pop().unwrap();
                 stack.push(a % b);
             }
             '^' => {
-                let b: u64 = stack.pop().unwrap();
-                let a: u64 = stack.pop().unwrap();
-                stack.push(u64::pow(a, b as u32));
+                let b: i64 = stack.pop().unwrap();
+                let a: i64 = stack.pop().unwrap();
+                stack.push(i64::pow(a, b as u32));
             }
             _ => {
-                stack.push(token.to_digit(10).unwrap() as u64);
+                stack.push(token.to_digit(10).unwrap() as i64);
             }
         }
     }

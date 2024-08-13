@@ -6,6 +6,8 @@ use evalutate_rpn::evaluate_rpn;
 // mod math_binary;
 mod shunting_yard;
 mod evalutate_rpn;
+
+#[cfg(test)]
 mod test;
 
 #[derive(Parser, Debug)]
@@ -23,6 +25,7 @@ fn main() {
     let args = Args::parse();
     let math_string = args.math_string;
     let output_queue = shunting_yard::shunting_yard(math_string);
+    println!("output_queue: {:?}", output_queue);
     let result = evaluate_rpn(output_queue);
     println!("{:?}", result);
 

@@ -10,44 +10,44 @@
 *               to panic when it read a `None` from the empty stack.
 */
 
-pub fn evaluate_rpn(output_queue: Vec<char>) -> i64 {
+pub fn evaluate_rpn(output_queue: Vec<String>) -> i64 {
     let mut stack: Vec<i64> = Vec::new();
 
     for token in output_queue.into_iter() {
         // My a & b were here.
-        match token {
-            '+' => {
+        match token.as_str() {
+            "+" => {
                 let b: i64 = stack.pop().unwrap();
                 let a: i64 = stack.pop().unwrap();
                 stack.push(a + b);
             }
-            '-' => {
+            "-" => {
                 let b: i64 = stack.pop().unwrap();
                 let a: i64 = stack.pop().unwrap();
                 stack.push(a - b);
             }
-            '*' => {
+            "*" => {
                 let b: i64 = stack.pop().unwrap();
                 let a: i64 = stack.pop().unwrap();
                 stack.push(a * b);
             }
-            '/' => {
+            "/" => {
                 let b: i64 = stack.pop().unwrap();
                 let a: i64 = stack.pop().unwrap();
                 stack.push(a / b);
             }
-            '%' => {
+            "%" => {
                 let b: i64 = stack.pop().unwrap();
                 let a: i64 = stack.pop().unwrap();
                 stack.push(a % b);
             }
-            '^' => {
+            "^" => {
                 let b: i64 = stack.pop().unwrap();
                 let a: i64 = stack.pop().unwrap();
                 stack.push(i64::pow(a, b as u32));
             }
             _ => {
-                stack.push(token.to_digit(10).unwrap() as i64);
+                stack.push(token.parse().unwrap());
             }
         }
     }

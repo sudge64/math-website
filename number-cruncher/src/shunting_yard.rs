@@ -1,7 +1,7 @@
-/* 
+/*
 * Original Author: C.J. Wade
 * License: T.B.D.
-* Description: Implements Dijkstra's Shunting Yard algorithm as detailed from 
+* Description: Implements Dijkstra's Shunting Yard algorithm as detailed from
 *              psuedo code written on [Wikipedia](https://en.wikipedia.org/wiki/Shunting_yard_algorithm)
 */
 use core::panic;
@@ -19,7 +19,7 @@ struct Operator {
     associativity: Associativity,
 }
 
-pub fn shunting_yard(math_string: String) -> Vec<char> {
+pub fn shunting_yard(math_string: String) -> Vec<String> {
     let operators: HashMap<char, Operator> = {
         // Precendence values decided from this table: https://en.wikipedia.org/wiki/Shunting_yard_algorithm#Detailed_examples
         let mut m = HashMap::new();
@@ -81,8 +81,9 @@ pub fn shunting_yard(math_string: String) -> Vec<char> {
         );
         m
     };
-    let mut output_queue: Vec<char> = Vec::new();
+    let mut output_queue: Vec<String> = Vec::new();
     let mut operator_stack: Vec<char> = Vec::new();
+    let mut number_accumulator: String = String::new();
 
     // while there are tokens to be read:
     // read a token
@@ -91,82 +92,94 @@ pub fn shunting_yard(math_string: String) -> Vec<char> {
         // - a number:
         if token.is_numeric() {
             // put it into the output queue
-            output_queue.push(token);
-        } else if token == ' ' {
-            continue;
-        // - a function:
-        // push it onto the operator stack
-        // - an operator o1:
-        } else if let Some(operator) = operators.get(&token) {
-            if token == '(' {
-                operator_stack.push(token);
-            } else if token == ')' {
-                while let Some(top) = operator_stack.pop() {
-                    match top {
-                        '(' => {
+            //output_queue.push(token);
+            number_accumulator.push(token);
+        } else {
+            if !number_accumulator.is_empty() {
+                output_queue.push(number_accumulator.clone());
+                number_accumulator.clear();
+            }
+
+            if token == ' ' {
+                continue;
+            // - a function:
+            // push it onto the operator stack
+            // - an operator o1:
+            } else if let Some(operator) = operators.get(&token) {
+                if token == '(' {
+                    operator_stack.push(token);
+                } else if token == ')' {
+                    while let Some(top) = operator_stack.pop() {
+                        match top {
+                            '(' => {
+                                break;
+                            }
+                            _ => {
+                                output_queue.push(top.to_string());
+                            }
+                        }
+                    }
+                } else {
+                    // while (
+                    // there is an operator o2 at the top of the operator stack which is not a left parenthesis,
+                    // and (o2 has greater precedence than o1 or (o1 and o2 have the same precedence and o1 is left-associative))
+                    // ):
+                    while let Some(&o2) = operator_stack.last() {
+                        let o2_operator = operators.get(&o2).unwrap();
+                        if o2 != '('
+                            && (o2_operator.precedence > operator.precedence
+                                || (o2_operator.precedence == operator.precedence
+                                    && operator.associativity == Associativity::Left))
+                        {
+                            // pop o2 from the operator stack into the output queue
+                            output_queue.push(operator_stack.pop().unwrap().to_string());
+                        } else {
                             break;
                         }
-                        _ => {
-                            output_queue.push(top);
-                        }
                     }
+                    // push o1 onto the operator stack
+                    operator_stack.push(token);
                 }
-            } else {
-            // while (
-                // there is an operator o2 at the top of the operator stack which is not a left parenthesis,
-                // and (o2 has greater precedence than o1 or (o1 and o2 have the same precedence and o1 is left-associative))
-            // ):
-                while let Some(&o2) = operator_stack.last() {
-                    let o2_operator = operators.get(&o2).unwrap();
-                    if o2 != '('
-                        && (o2_operator.precedence > operator.precedence
-                            || (o2_operator.precedence == operator.precedence
-                                && operator.associativity == Associativity::Left))
-                    {
-                        // pop o2 from the operator stack into the output queue
-                        output_queue.push(operator_stack.pop().unwrap());
-                    } else {
-                        break;
-                    }
-                }
-                // push o1 onto the operator stack
-                operator_stack.push(token);
-            }
-        //- a ",":
-        } else if token == ',' {
-            // while the operator at the top of the operator stack is not a left parenthesis:
-            let popped_operator = operator_stack.pop().unwrap();
-            if popped_operator != '(' {
-                // pop the operator from the operator stack into the output queue
-                output_queue.push(popped_operator);
-            } else {
-                break;
-            }
-        // - a left parenthesis (i.e. "("):
-        } else if token == '(' {
-            // push it onto the operator stack
-            operator_stack.push(token);
-        // - a right parenthesis (i.e. ")"):
-        } else if token == ')' {
-            // while the operator at the top of the operator stack is not a left parenthesis:
-            let popped_operator = operator_stack.pop().unwrap();
-            if popped_operator != '(' {
-                // {assert the operator stack is not empty}
-                if operator_stack.is_empty() == false {
+            //- a ",":
+            } else if token == ',' {
+                // while the operator at the top of the operator stack is not a left parenthesis:
+                let popped_operator = operator_stack.pop().unwrap();
+                if popped_operator != '(' {
                     // pop the operator from the operator stack into the output queue
-                    output_queue.push(popped_operator);
+                    output_queue.push(popped_operator.to_string());
                 } else {
-                    panic!("ERROR: Stack is empty somehow?");
+                    break;
                 }
-            } else {
-                // pop the left parenthesis from the operator stack and discard it
-                operator_stack.pop();
-            }
-            // if there is a function token at the top of the operator stack, then:
+            // - a left parenthesis (i.e. "("):
+            } else if token == '(' {
+                // push it onto the operator stack
+                operator_stack.push(token);
+            // - a right parenthesis (i.e. ")"):
+            } else if token == ')' {
+                // while the operator at the top of the operator stack is not a left parenthesis:
+                let popped_operator = operator_stack.pop().unwrap();
+                if popped_operator != '(' {
+                    // {assert the operator stack is not empty}
+                    if operator_stack.is_empty() == false {
+                        // pop the operator from the operator stack into the output queue
+                        output_queue.push(popped_operator.to_string());
+                    } else {
+                        panic!("ERROR: Stack is empty somehow?");
+                    }
+                } else {
+                    // pop the left parenthesis from the operator stack and discard it
+                    operator_stack.pop();
+                }
+                // if there is a function token at the top of the operator stack, then:
                 // pop the function from the operator stack into the output queue
-        } else {
-            panic!("ERROR: Unrecognized operator.");
+            } else {
+                panic!("ERROR: Unrecognized operator.");
+            }
         }
+    }
+
+    if !number_accumulator.is_empty() {
+        output_queue.push(number_accumulator);
     }
 
     // while there are tokens on the operator stack:
@@ -175,7 +188,7 @@ pub fn shunting_yard(math_string: String) -> Vec<char> {
         // {assert the operator on top of the stack is not a (left) parenthesis}
         if popped_operator != '(' {
             // pop the operator from the operator stack onto the output queue
-            output_queue.push(popped_operator);
+            output_queue.push(popped_operator.to_string());
         }
     });
 

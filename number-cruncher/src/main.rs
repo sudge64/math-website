@@ -25,7 +25,6 @@ fn main() {
     let args = Args::parse();
     let math_string = args.math_string;
     let output_queue = shunting_yard::shunting_yard(math_string);
-    println!("output_queue: {:?}", output_queue);
     let result = evaluate_rpn(output_queue);
     println!("{:?}", result);
 

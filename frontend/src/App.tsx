@@ -89,8 +89,8 @@ function App() {
           <Button color="primary" char="-" onClick={handleButtonClick}>
             <MathJax>{"$$-$$"}</MathJax>
           </Button>
-          <Button color="primary" char="^{2}" onClick={handleButtonClick}>
-            <MathJax>{"$$x^{2}$$"}</MathJax>
+          <Button color="primary" char="^" onClick={handleButtonClick}>
+            <MathJax>{"$$x^{y}$$"}</MathJax>
           </Button>
           <Button color="primary" char="0" onClick={handleButtonClick}>
             <MathJax>{"$$0$$"}</MathJax>

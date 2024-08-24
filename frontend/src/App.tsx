@@ -19,11 +19,11 @@ function App() {
   });
 
   const handleButtonClick = (char: string) => {
-    setCurrentText(prev => prev + char);
+    setCurrentText((prev) => prev + char);
   };
 
   const handleBackspaceClick = () => {
-    setCurrentText(prev => prev.slice(0, -1));
+    setCurrentText((prev) => prev.slice(0, -1));
   };
 
   const handleSendText = () => {
@@ -45,7 +45,12 @@ function App() {
   return (
     <>
       <MathJaxContext>
-        <TextBox socket={socket} currentText={currentText} setCurrentText={setCurrentText}/>
+        <TextBox
+          socket={socket}
+          currentText={currentText}
+          setCurrentText={setCurrentText}
+          handleSendText={handleSendText}
+        />
         <div className="grid-buttons">
           <Button color="primary" char="7" onClick={handleButtonClick}>
             <MathJax>{"$$7$$"}</MathJax>
@@ -108,14 +113,16 @@ function App() {
             <MathJax>{"$$=$$"}</MathJax>
           </Button>
           <Button color="primary" char=" " onClick={handleButtonClick}>
-            Space
+            ⎵
           </Button>
-          <Button color="primary" char="backspace" onClick={handleBackspaceClick}>
+          <Button
+            color="primary"
+            char="backspace"
+            onClick={handleBackspaceClick}
+          >
             ⌫
           </Button>
         </div>
-        <p>{response}</p>
-        <p>{message}</p>
       </MathJaxContext>
     </>
   );

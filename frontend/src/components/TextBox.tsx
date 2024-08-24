@@ -1,31 +1,52 @@
 import { useEffect, useState } from "react";
 import Button from "./Button";
 
-function TextBox({ socket, currentText, setCurrentText }) {
-  const [resultText, setResultText ] = useState("");
+function TextBox({ socket, currentText, setCurrentText, handleSendText }) {
+  const [resultText, setResultText] = useState("");
 
   useEffect(() => {
+    // Listen for incoming messages from the server
     socket.on("receiveText", (data) => {
       setResultText(data);
     });
-  }, []);
 
-  const sendTextFunction = () => {
-    if (currentText !== "") {
-      const textData = {
-        text: currentText,
-        time:
-          new Date(Date.now()).getHours() +
-          ":" +
-          new Date(Date.now()).getMinutes() +
-          " " +
-          new Date(Date.now()).getDay(),
-      };
-      socket.emit("sendText", textData);
-      setResultText(textData.text);
-    }
-  };
-  
+    // Add a keydown event listener to handle keyboard input
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key >= "0" && event.key <= "9") {
+        // For numeric keys
+        setCurrentText(prev => prev + event.key);
+      } else if (event.key === "Backspace") {
+        // For backspace key
+        setCurrentText(prev => prev.slice(0, -1));
+      } else if (event.key === ".") {
+        setCurrentText(prev => prev + ".");
+      } else if (event.key === "+") {
+        setCurrentText(prev => prev + "+");
+      } else if (event.key === "-") {
+        setCurrentText(prev => prev + "-");
+      } else if (event.key === "*") {
+        setCurrentText(prev => prev + "*");
+      } else if (event.key === "/") {
+        setCurrentText(prev => prev + "/");
+      } else if (event.key === "%") {
+        setCurrentText(prev => prev + "%");
+      } else if (event.key === "^") {
+        setCurrentText(prev => prev + "^");
+      } else if (event.key === "=" || event.key === "Enter") {
+        // Handle equal sign or enter for submit
+        handleSendText()
+      }
+    };
+
+    // Attach the event listener
+    window.addEventListener("keydown", handleKeyDown);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [socket, setCurrentText, handleSendText]);
+
   return (
     <>
       <div>
@@ -35,14 +56,14 @@ function TextBox({ socket, currentText, setCurrentText }) {
         <input
           type="text"
           value={currentText}
-          placeholder="Enter Math Expression (RPN format)"
+          placeholder="Enter Math Expression"
           onChange={(e) => {
             setCurrentText(e.target.value);
           }}
         />
-      <Button color="primary" onClick={sendTextFunction}>
+        <Button color="primary" onClick={handleSendText}>
           &#9658;
-      </Button>
+        </Button>
       </div>
     </>
   );

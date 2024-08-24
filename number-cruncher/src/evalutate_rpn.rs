@@ -10,41 +10,41 @@
 *               to panic when it read a `None` from the empty stack.
 */
 
-pub fn evaluate_rpn(output_queue: Vec<String>) -> i64 {
-    let mut stack: Vec<i64> = Vec::new();
+pub fn evaluate_rpn(output_queue: Vec<String>) -> f64 {
+    let mut stack: Vec<f64> = Vec::new();
 
     for token in output_queue.into_iter() {
         // My a & b were here.
         match token.as_str() {
             "+" => {
-                let b: i64 = stack.pop().unwrap();
-                let a: i64 = stack.pop().unwrap();
+                let b: f64 = stack.pop().unwrap();
+                let a: f64 = stack.pop().unwrap();
                 stack.push(a + b);
             }
             "-" => {
-                let b: i64 = stack.pop().unwrap();
-                let a: i64 = stack.pop().unwrap();
+                let b: f64 = stack.pop().unwrap();
+                let a: f64 = stack.pop().unwrap();
                 stack.push(a - b);
             }
             "*" => {
-                let b: i64 = stack.pop().unwrap();
-                let a: i64 = stack.pop().unwrap();
+                let b: f64 = stack.pop().unwrap();
+                let a: f64 = stack.pop().unwrap();
                 stack.push(a * b);
             }
             "/" => {
-                let b: i64 = stack.pop().unwrap();
-                let a: i64 = stack.pop().unwrap();
+                let b: f64 = stack.pop().unwrap();
+                let a: f64 = stack.pop().unwrap();
                 stack.push(a / b);
             }
             "%" => {
-                let b: i64 = stack.pop().unwrap();
-                let a: i64 = stack.pop().unwrap();
+                let b: f64 = stack.pop().unwrap();
+                let a: f64 = stack.pop().unwrap();
                 stack.push(a % b);
             }
             "^" => {
-                let b: i64 = stack.pop().unwrap();
-                let a: i64 = stack.pop().unwrap();
-                stack.push(i64::pow(a, b as u32));
+                let b: f64 = stack.pop().unwrap();
+                let a: f64 = stack.pop().unwrap();
+                stack.push(f64::powf(a, b));
             }
             _ => {
                 stack.push(token.parse().unwrap());

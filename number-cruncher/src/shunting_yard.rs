@@ -84,6 +84,7 @@ pub fn shunting_yard(math_string: String) -> Vec<String> {
     let mut output_queue: Vec<String> = Vec::new();
     let mut operator_stack: Vec<char> = Vec::new();
     let mut number_accumulator: String = String::new();
+    let mut decimal_found: bool = false;
 
     // while there are tokens to be read:
     // read a token
@@ -94,10 +95,17 @@ pub fn shunting_yard(math_string: String) -> Vec<String> {
             // put it into the output queue
             //output_queue.push(token);
             number_accumulator.push(token);
+        } else if token == '.' {
+            if decimal_found {
+                panic!("ERROR: Invalid format, multiple decimals found");
+            }
+            decimal_found = true;
+            number_accumulator.push(token);
         } else {
             if !number_accumulator.is_empty() {
                 output_queue.push(number_accumulator.clone());
                 number_accumulator.clear();
+                decimal_found = false;
             }
 
             if token == ' ' {

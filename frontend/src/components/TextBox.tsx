@@ -12,27 +12,7 @@ function TextBox({ socket, currentText, setCurrentText, handleSendText }) {
 
     // Add a keydown event listener to handle keyboard input
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key >= "0" && event.key <= "9") {
-        // For numeric keys
-        setCurrentText(prev => prev + event.key);
-      } else if (event.key === "Backspace") {
-        // For backspace key
-        setCurrentText(prev => prev.slice(0, -1));
-      } else if (event.key === ".") {
-        setCurrentText(prev => prev + ".");
-      } else if (event.key === "+") {
-        setCurrentText(prev => prev + "+");
-      } else if (event.key === "-") {
-        setCurrentText(prev => prev + "-");
-      } else if (event.key === "*") {
-        setCurrentText(prev => prev + "*");
-      } else if (event.key === "/") {
-        setCurrentText(prev => prev + "/");
-      } else if (event.key === "%") {
-        setCurrentText(prev => prev + "%");
-      } else if (event.key === "^") {
-        setCurrentText(prev => prev + "^");
-      } else if (event.key === "=" || event.key === "Enter") {
+      if (event.key === "Enter") {
         // Handle equal sign or enter for submit
         handleSendText()
       }

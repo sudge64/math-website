@@ -33,9 +33,7 @@ function App() {
         time:
           new Date(Date.now()).getHours() +
           ":" +
-          new Date(Date.now()).getMinutes() +
-          " " +
-          new Date(Date.now()).getDay(),
+          new Date(Date.now()).getMinutes(),
       };
       socket.emit("sendText", textData);
       setResponse(textData.text);

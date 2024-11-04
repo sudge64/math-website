@@ -47,7 +47,7 @@ io.on("connection", (socket) => {
     console.log(data);
     try {
       const result = await childProc(data.text);
-      console.log(`result: ${result}`);
+      console.log(`socket.id: ${socket.id}\nresult: ${result}`);
       socket.emit("receiveText", result);
     } catch (e) {
       socket.emit("receiveText", e);

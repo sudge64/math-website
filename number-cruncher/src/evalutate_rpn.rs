@@ -1,4 +1,4 @@
-/* 
+/*
 * Original Author: C.J. Wade
 * License: T.B.D.
 * Description: Evalutates RPN stacks.

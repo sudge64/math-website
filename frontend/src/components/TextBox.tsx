@@ -29,11 +29,9 @@ function TextBox({ socket, currentText, setCurrentText, handleSendText }) {
 
   return (
     <>
-      <div>
-        <p>{resultText}</p>
-      </div>
-      <div>
+      <div class="text-box-container">
         <input
+          class="text-box-input"
           type="text"
           value={currentText}
           placeholder="Enter Math Expression"

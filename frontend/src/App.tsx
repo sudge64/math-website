@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import Button from "./components/Button";
 import TextBox from "./components/TextBox";
+import ChatHistory from "./components/ChatHistory";
 import { MathJax, MathJaxContext } from "better-react-mathjax";
 
 const socket = io.connect("http://localhost:3001");
@@ -11,12 +12,30 @@ function App() {
   const [message, setMessage] = useState("");
   const [response, setResponse] = useState("");
   const [currentText, setCurrentText] = useState("");
+  const [history, setHistory] = useState<{ text: string; result: string }[]>(
+    [],
+  );
 
   useEffect(() => {
     fetch("http://localhost:3001/")
       .then((message) => message.text())
       .then((data) => setMessage(data));
-  });
+
+    socket.on("receiveText", (result: string) => {
+      const entry = {
+        text: currentText,
+        time: `${new Date().getHours()}:${new Date().getMinutes()}`,
+        result,
+      };
+      setHistory((prevHistory) => [entry, ...prevHistory]);
+      setResponse(result);
+      setCurrentText("");
+    });
+
+    return () => {
+      socket.off("receiveText");
+    };
+  }, [currentText]);
 
   const handleButtonClick = (char: string) => {
     setCurrentText((prev) => prev + char);
@@ -30,10 +49,7 @@ function App() {
     if (currentText !== "") {
       const textData = {
         text: currentText,
-        time:
-          new Date(Date.now()).getHours() +
-          ":" +
-          new Date(Date.now()).getMinutes(),
+        time: `${new Date().getHours()}:${new Date().getMinutes()}`,
       };
       socket.emit("sendText", textData);
       setResponse(textData.text);
@@ -43,6 +59,7 @@ function App() {
   return (
     <>
       <MathJaxContext>
+        <ChatHistory history={history} />
         <TextBox
           socket={socket}
           currentText={currentText}

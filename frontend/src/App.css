@@ -11,9 +11,11 @@
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
@@ -22,6 +24,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -40,6 +43,7 @@
 .read-the-docs {
   color: #888888;
 }
+
 .chat-history {
   overflow-y: auto;
   padding: 10px;
@@ -52,7 +56,8 @@
   padding: 5px 0;
 }
 
-.chat-text, .chat-result {
+.chat-text,
+.chat-result {
   font-weight: bold;
 }
 
@@ -64,15 +69,17 @@
 .chat-result {
   text-align: right;
 }
+
 .text-box-container {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-top: 1em;
 }
 
 .text-box-input {
   width: 100%;
-  padding: 10px;
+  padding: 0.45em;
   font-size: 1.2em;
   background-color: #1b1b1b;
   color: #ffffff;

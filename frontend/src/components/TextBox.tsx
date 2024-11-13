@@ -14,7 +14,7 @@ function TextBox({ socket, currentText, setCurrentText, handleSendText }) {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Enter") {
         // Handle equal sign or enter for submit
-        handleSendText()
+        handleSendText();
       }
     };
 
